@@ -1,35 +1,73 @@
 Source code for calclation of confidence probability vs tolerance factors dependence and estimation statistical parameters with required confidence probability
 
 ## Import
-```text
+```python
 import numpy as np
 import scipy as sc
-from tolerance.confidence import ConfidenceCalculator
+from basics import ConfidenceCalculator
 ```
 ## Initial parameters
-```text
-# tolerance factor arrays
-k1 = np.linspace(0.05, 10, 100, dtype=np.float64)
-k2 = np.copy(k1)
-# sample size
-ss = 10
-# number of repeats
-rn = 10000
-# RV distribution
-distr = stats.norm
+```python
+# scope of definition and
+# the arrays of tolerance factor values
+tf1_min, tf1_max = 0, 5
+tf2_min, tf2_max = 0, 5
+tf1_array = np.linspace(tf1_min, tf1_max)
+tf2_array = np.linspace(tf2_min, tf2_max)
+
+# the sample size and number of calculation repeats
+n_elements = 10
+n_events = 10000
+```
 
 ## Create calculator
-```text
-# Initialization
-calculator = ConfidenceCalculator(distr)
+```python
+# a priory distribution
+distr_type = stats.norm
+# create the calculator
+model = ConfidenceCalculator(distr_type)
 ```
 
 ## Calculations
-```text
-# Calculating the coverages
-calculator.calc_coverages(sample_size=ss, num_of_events=rn, tolerance_factor_lower=k1, tolerance_factor_upper=k2)
-# Calculating the confidence
-check_coverages = np.linspace(0, 1, 101)
-# Confidence probability of event A = {check_coverages >= true_coverage}
-calculator.calc_confidence(check_coverages)
+```python
+# p-value to being checked
+p_value = 0.95
+
+# calculate the coverage
+model.coverage_calc(n_elements, n_events, tf1_array, tf2_array)
+# probability of event that the true p_value is equal to p
+conf = model.confidence(p_value)
 ```
+
+## Result of calculations
+```text
+Result of calculations is the confidence probability (level) vs tolerance factors dependence:
+```
+```math
+\gamma(P, tf1, tf2, n)
+```
+```text
+In gif below parameter P is iterable
+for n = 2:
+```
+![Plot](https://github.com/danisgrpv/tolerance-intervals/blob/master/plots/plot-2.gif)
+
+```text
+for n = 10:
+```
+![Plot](https://github.com/danisgrpv/tolerance-intervals/blob/master/plots/plot-1.gif)
+
+
+## Processing of observations
+```text
+The probability of event with required confidence level is:
+```
+```math
+P^* = {arg\,min}_P \ |\gamma(P, k1, k2, n) - \gamma_{required}|
+```
+
+```text
+In gif below required confidence probability is iterable.
+Probability of event vs required confidence probability dependence is shown:
+```
+![Plot](https://github.com/danisgrpv/tolerance-intervals/blob/master/plots/survival.gif)

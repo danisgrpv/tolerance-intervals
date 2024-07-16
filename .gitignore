@@ -1,3 +1,4 @@
-*.gif
+anim.gif
+*.ipynb
 tolerance estimation.ipynb
 __pycache__
