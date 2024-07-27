@@ -10,10 +10,10 @@ from basics import ConfidenceCalculator
 ```python
 # scope of definition and
 # the arrays of tolerance factor values
-tf1_min, tf1_max = 0, 5
-tf2_min, tf2_max = 0, 5
-tf1_array = np.linspace(tf1_min, tf1_max)
-tf2_array = np.linspace(tf2_min, tf2_max)
+k1_min, k1_max = 0, 5
+k2_min, k2_max = 0, 5
+k1_array = np.linspace(k1_min, k1_max)
+k2_array = np.linspace(k2_min, k2_max)
 
 # the sample size and number of calculation repeats
 n_elements = 10
@@ -34,7 +34,7 @@ model = ConfidenceCalculator(distr_type)
 p_value = 0.95
 
 # calculate the coverage
-model.coverage_calc(n_elements, n_events, tf1_array, tf2_array)
+model.coverage_calc(n_elements, n_events, k1_array, k2_array)
 # probability of event that the true p_value is equal to p
 conf = model.confidence(p_value)
 ```
@@ -44,7 +44,7 @@ conf = model.confidence(p_value)
 Result of calculations is the confidence probability (level) vs tolerance factors dependence:
 ```
 ```math
-\gamma(P, tf1, tf2, n)
+\gamma(P, k1, k2, n)
 ```
 ```text
 In gif below parameter P is iterable
